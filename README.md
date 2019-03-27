@@ -1,7 +1,7 @@
 # uno-api
 
 [![npm version](https://img.shields.io/npm/v/uno-api.svg?style=flat-square)](https://www.npmjs.org/package/uno-api)
-[![build status](https://img.shields.io/travis/uno-api/uno-api.svg?style=flat-square)](https://travis-ci.org/uno-api/uno-api)
+[![build status](https://img.shields.io/travis/chornos13/uno-api.svg?style=flat-square)](https://travis-ci.org/uno-api/uno-api)
 [![code coverage](https://img.shields.io/coveralls/chornos13/uno-api.svg?style=flat-square)](https://coveralls.io/r/chornos13/uno-api)
 [![install size](https://packagephobia.now.sh/badge?p=uno-api)](https://packagephobia.now.sh/result?p=uno-api)
 [![npm downloads](https://img.shields.io/npm/dm/uno-api.svg?style=flat-square)](http://npm-stat.com/charts.html?package=uno-api)
