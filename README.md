@@ -66,8 +66,8 @@ simpleRouter.create({
 
 ```js
 simpleRouter.create({
-	baseUrl: '/public',
-	get: {
+baseUrl: '/public',
+get: {
         middleware: undefined,
         callback: undefined, url: undefined,
         overrideMiddleware: false
