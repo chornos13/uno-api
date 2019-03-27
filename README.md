@@ -35,7 +35,7 @@ simpleRouter.create({
 ```
 
 
-## uno API
+## unoAPI
 
 
 #### unoApi.Router(config)
