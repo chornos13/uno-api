@@ -63,10 +63,13 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 
 
 	this.addArrayRoute = (cfgMethod) => {
-		let [name, callback, middleware] = cfgMethod
-		if(!name || !callback) {
+		let [cname, ccallback] = cfgMethod
+		if(!cname || !ccallback) {
 			throw new Error(`name or function is required ! ex: [':name', function]`)
 		}
+		let name = cfgMethod.shift()
+		let callback = cfgMethod.pop()
+		let middleware = [...cfgMethod]
 
 		let c = { url: name, callback, middleware }
 		let cfgMethodArray = Object.assign(clone(METHOD_CONFIG), c)

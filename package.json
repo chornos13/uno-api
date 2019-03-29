@@ -1,8 +1,18 @@
 {
   "name": "uno-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "simplify express router",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chornos13/uno-api.git"
+  },
+  "keywords": [
+    "simple",
+    "express",
+    "router",
+    "nodejs"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
