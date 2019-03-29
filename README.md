@@ -19,7 +19,8 @@ $ npm install uno-api
 var router = express.Router();
 const UnoRouter = require('uno-api').Router
 const simpleRouter = new UnoRouter(router)
-
+const MiddlewareAuth = require('./controllers/MiddlewareAuth')
+const UserController = require('./controllers/UserController')
 function mainPage(req, res, next) {
   res.render('index', { title: 'Express' });
 }
@@ -27,8 +28,26 @@ function mainPage(req, res, next) {
 /* GET home page. */
 simpleRouter.create({
   baseUrl: '/',
+  middleware: MiddlewareAuth.token, //use array example: [MiddlewareAuth.token, MiddlewareAuth.ip]
   get: mainPage
 })
+
+simpleRouter.create({
+	baseUrl: '/user',
+	get: UserController.getUser,
+	getWithParam: [
+		[':UserId', UserController.getUserByUserId], //ex: http://localhost:3000/user/1
+		[':UserId/:RoleId', MiddlewareAuth.main, UserController.getUserByRoleId] //ex: http://localhost:3000/user/1/5
+	],
+	post: {
+		middleware: MiddlewareAuth.multer([{ name: 'file', maxCount: 1 }]), //or with array [MiddlewareAuth.multer([{ name: 'file', maxCount: 1 }])],
+		callback: UserController.createUser
+	},
+	put: UserController.updateUser,
+	delete: UserController.deleteUser,
+})
+
+
 ```
 
 
