@@ -32,7 +32,7 @@ function useMultiArrayAndObject(data, cbArray, cbObj) {
 			if(data.length === 0) {
 				throw new Error('Array cannot be empty !')
 			}
-			else if(Array.isArray(data[0])) { //cek data isi data dalam array ex: [[a,b], [c,d]] -> [a,b]
+			else if(Array.isArray(data[0]) || isPureObject(data[0])) { //cek data isi data dalam array ex: [[a,b], [c,d]] -> [a,b]
 				for (let i = 0; i < data.length; i++) {
 					let arrayOrObj = data[i]
 					if (isPureObject(arrayOrObj)) {

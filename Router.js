@@ -40,7 +40,6 @@ function getMiddleware(unosApi, createConfigs, cfgMethod) {
 			break;
 		}
 	}
-	// console.log(curMiddleware)
 	return curMiddleware
 }
 
@@ -64,14 +63,19 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 
 	this.addArrayRoute = (cfgMethod) => {
 		let [cname, ccallback] = cfgMethod
-		if(!cname || !ccallback) {
+		if(!cname || (ccallback !== true && !ccallback)) {
 			throw new Error(`name or function is required ! ex: [':name', function]`)
 		}
-		let name = cfgMethod.shift()
+		let overrideMiddleware = false
 		let callback = cfgMethod.pop()
+		if(callback === true) {
+			overrideMiddleware = true
+			callback = cfgMethod.pop()
+		}
+		let name = cfgMethod.shift()
 		let middleware = [...cfgMethod]
 
-		let c = { url: name, callback, middleware }
+		let c = { url: name, callback, middleware, overrideMiddleware }
 		let cfgMethodArray = Object.assign(clone(METHOD_CONFIG), c)
 		let curMiddleware = getMiddleware(unosApi, createConfigs, cfgMethodArray)
 		unosApi.router[method](unosApi.getBaseUrl(createConfigs, cfgMethodArray), ...curMiddleware, callback)
@@ -89,7 +93,6 @@ function useRoute(unosApi, createConfigs, method) {
 function useRouteWithParam(unosApi, createConfigs, method) {
 	const cfgMethod = createConfigs[method + 'WithParam']
 	const configureApi = new ConfigureApi(unosApi, createConfigs, method, true)
-
 	ArgumentHelpers.useMultiArrayAndObject(cfgMethod, configureApi.addArrayRoute, configureApi.addObjectRoute)
 }
 
