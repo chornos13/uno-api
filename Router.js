@@ -48,7 +48,7 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 	this.addRoute = (cfgMethod) => {
 		let curMiddleware = getMiddleware(unosApi, createConfigs, cfgMethod)
 		if(cfgMethod) {
-			unosApi.router[method](unosApi.getBaseUrl(createConfigs, cfgMethod), ...curMiddleware, cfgMethod)
+			unosApi.router[method](unosApi.getBaseURL(createConfigs, cfgMethod), ...curMiddleware, cfgMethod)
 		}
 	}
 
@@ -57,7 +57,7 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 		if(withParam && !cfgMethod.url) { throw new Error(`${method}WithParam object need url !!! ${JSON.stringify(cfgMethod)}`)}
 		if(!withParam) { cfgMethod.url = '' }
 		let curMiddleware = getMiddleware(unosApi, createConfigs, cfgMethod)
-		unosApi.router[method](unosApi.getBaseUrl(createConfigs, cfgMethod), ...curMiddleware, cfgMethod.callback)
+		unosApi.router[method](unosApi.getBaseURL(createConfigs, cfgMethod), ...curMiddleware, cfgMethod.callback)
 	}
 
 
@@ -78,7 +78,7 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 		let c = { url: name, callback, middleware, overrideMiddleware }
 		let cfgMethodArray = Object.assign(clone(METHOD_CONFIG), c)
 		let curMiddleware = getMiddleware(unosApi, createConfigs, cfgMethodArray)
-		unosApi.router[method](unosApi.getBaseUrl(createConfigs, cfgMethodArray), ...curMiddleware, callback)
+		unosApi.router[method](unosApi.getBaseURL(createConfigs, cfgMethodArray), ...curMiddleware, callback)
 	}
 }
 
@@ -105,7 +105,7 @@ class UnosApi {
 		this.router = router
 	}
 
-	getBaseUrl(createConfigs, cfgMethod) {
+	getBaseURL(createConfigs, cfgMethod) {
 		return [this.configs.baseURL, [createConfigs.baseURL, cfgMethod.url || ''].join('/')].join('')
 	}
 
