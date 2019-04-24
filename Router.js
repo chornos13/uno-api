@@ -4,12 +4,12 @@
 const ArgumentHelpers = require('./ArgumentHelpers')
 
 const UNOS_CONFIG = {
-	baseUrl: '',
+	baseURL: '',
 	middleware: undefined,
 }
 
 const CREATE_CONFIG = {
-	baseUrl: '',
+	baseURL: '',
 	get: undefined, post: undefined, put: undefined, delete: undefined,
 	getWithParam: undefined, postWithParam: undefined,
 	putWithParam: undefined, deleteWithParam: undefined,
@@ -106,7 +106,7 @@ class UnosApi {
 	}
 
 	getBaseUrl(createConfigs, cfgMethod) {
-		return [this.configs.baseUrl, [createConfigs.baseUrl, cfgMethod.url || ''].join('/')].join('')
+		return [this.configs.baseURL, [createConfigs.baseURL, cfgMethod.url || ''].join('/')].join('')
 	}
 
 	create(configs) {

@@ -27,13 +27,13 @@ function mainPage(req, res, next) {
 
 /* GET home page. */
 simpleRouter.create({
-  baseUrl: '/',
+  baseURL: '/',
   middleware: MiddlewareAuth.token, //use array example: [MiddlewareAuth.token, MiddlewareAuth.ip]
   get: mainPage
 })
 
 simpleRouter.create({
-	baseUrl: '/user',
+	baseURL: '/user',
 	get: UserController.getUser,
 	getWithParam: [
 		[':UserId', UserController.getUserByUserId], //ex: http://localhost:3000/user/1
@@ -59,7 +59,7 @@ simpleRouter.create({
 ```js
 //example
 const simpleRouter = new unoApi.Router({
-	baseUrl: '',
+	baseURL: '',
 	middleware: undefined,
 })
 ```
@@ -68,7 +68,7 @@ const simpleRouter = new unoApi.Router({
 
 ```js
 simpleRouter.create({
-	baseUrl: '/public',
+	baseURL: '/public',
 	get: undefined, post: undefined, put: undefined, delete: undefined,
 	getWithParam: undefined, postWithParam: undefined,
 	putWithParam: undefined, deleteWithParam: undefined,
@@ -82,7 +82,7 @@ simpleRouter.create({
 
 ```js
 simpleRouter.create({
-	baseUrl: '/public',
+	baseURL: '/public',
 	get: {
 		middleware: undefined,
 		callback: undefined, url: undefined,
