@@ -133,7 +133,7 @@ class UnosApi {
 		const wrapperRequest = cfgMethod.wrapperRequest || createConfigs.wrapperRequest || this.configs.wrapperRequest
 		if(Array.isArray(callback)) {
 			let cloneCallback = cloneArray(callback)
-			callback = callback.pop()
+			callback = cloneCallback.pop()
 			middleware = [...middleware, ...cloneCallback]
 		}
 
