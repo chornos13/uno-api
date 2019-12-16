@@ -61,6 +61,7 @@ simpleRouter.create({
 const simpleRouter = new unoApi.Router({
 	baseURL: '',
 	middleware: undefined,
+	wrapperRequest: undefined,
 })
 ```
 
@@ -74,6 +75,7 @@ simpleRouter.create({
 	putWithParam: undefined, deleteWithParam: undefined,
 	middleware: undefined,
 	overrideMiddleware: false,
+	wrapperRequest: undefined,
 })
 ```
 
@@ -86,7 +88,8 @@ simpleRouter.create({
 	get: {
 		middleware: undefined,
 		callback: undefined, url: undefined,
-		overrideMiddleware: false
+		overrideMiddleware: false,
+		wrapperRequest: undefined,
 	}
 })
 ```
