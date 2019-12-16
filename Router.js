@@ -49,6 +49,19 @@ function getMiddleware(unosApi, createConfigs, cfgMethod) {
 	return curMiddleware
 }
 
+function grabCallbackFromArray(arrCallback) {
+	let overrideMiddleware = false
+	let callback = arrCallback.pop()
+	if(callback === true) {
+		overrideMiddleware = true
+		callback = arrCallback.pop()
+	}
+	return {
+		overrideMiddleware,
+		callback
+	}
+}
+
 
 function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 	//adding method only when function is define !
@@ -75,12 +88,8 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 		if(!cname || (ccallback !== true && !ccallback)) {
 			throw new Error(`name or function is required ! ex: [':name', function]`)
 		}
-		let overrideMiddleware = false
-		let callback = cfgMethod.pop()
-		if(callback === true) {
-			overrideMiddleware = true
-			callback = cfgMethod.pop()
-		}
+
+		let { overrideMiddleware, callback } = grabCallbackFromArray(cfgMethod)
 		let name = cfgMethod.shift()
 		let middleware = [...cfgMethod]
 
@@ -133,8 +142,9 @@ class UnosApi {
 		const wrapperRequest = cfgMethod.wrapperRequest || createConfigs.wrapperRequest || this.configs.wrapperRequest
 		if(Array.isArray(callback)) {
 			let cloneCallback = cloneArray(callback)
-			callback = cloneCallback.pop()
-			middleware = [...middleware, ...cloneCallback]
+			let { overrideMiddleware, callback: cb } =  grabCallbackFromArray(cloneCallback)
+			callback = cb
+			middleware = [...(overrideMiddleware ? [] : middleware), ...cloneCallback]
 		}
 
 		let curCallback = callback
