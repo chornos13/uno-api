@@ -27,15 +27,19 @@ const METHOD_CONFIG = {
 
 const allowedMethod = ['get', 'post', 'put', 'delete']
 
-function clone(obj) {
+function cloneObj(obj) {
 	return Object.assign({}, obj)
+}
+
+function cloneArray(arr) {
+	return arr.slice(0)
 }
 
 function getMiddleware(unosApi, createConfigs, cfgMethod) {
 	let priorityConfig = [cfgMethod, createConfigs, unosApi.configs]
 	let curMiddleware = []
 	for(let i = 0; i < priorityConfig.length; i++) {
-		let config = clone(priorityConfig[i])
+		let config = cloneObj(priorityConfig[i])
 		let middleware = ArgumentHelpers.getSingleArray(config.middleware, true)
 		curMiddleware.splice(0, 0, ...middleware)
 		if(config.overrideMiddleware) {
@@ -81,7 +85,7 @@ function ConfigureApi(unosApi, createConfigs, method, withParam = false) {
 		let middleware = [...cfgMethod]
 
 		let c = { url: name, callback, middleware, overrideMiddleware }
-		let cfgMethodArray = Object.assign(clone(METHOD_CONFIG), c)
+		let cfgMethodArray = Object.assign(cloneObj(METHOD_CONFIG), c)
 		let curMiddleware = getMiddleware(unosApi, createConfigs, cfgMethodArray)
 		const url = unosApi.getBaseURL(createConfigs, cfgMethodArray)
 		unosApi.setToRouter({method, cfgMethod: cfgMethodArray, createConfigs}, url, curMiddleware, callback)
@@ -107,7 +111,7 @@ class UnosApi {
 		if(!router) {
 			throw new Error('router is required !')
 		}
-		this.configs = Object.assign(clone(UNOS_CONFIG), configs)
+		this.configs = Object.assign(cloneObj(UNOS_CONFIG), configs)
 		this.router = router
 	}
 
@@ -116,7 +120,7 @@ class UnosApi {
 	}
 
 	create(configs) {
-		const curConfigs = Object.assign(clone(CREATE_CONFIG), configs)
+		const curConfigs = Object.assign(cloneObj(CREATE_CONFIG), configs)
 		for(let i = 0; i < allowedMethod.length; i++) {
 			const method = allowedMethod[i]
 			useRoute(this, curConfigs, method)
@@ -126,7 +130,13 @@ class UnosApi {
 
 	setToRouter(configs, url, middleware, callback) {
 		const { method, cfgMethod, createConfigs } = configs
-		const wrapperRequest = cfgMethod.wrapperRequest || createConfigs.wrapperRequest
+		const wrapperRequest = cfgMethod.wrapperRequest || createConfigs.wrapperRequest || this.configs.wrapperRequest
+		if(Array.isArray(callback)) {
+			let cloneCallback = cloneArray(callback)
+			callback = callback.pop()
+			middleware = [...middleware, ...cloneCallback]
+		}
+
 		let curCallback = callback
 		if(wrapperRequest) {
 			curCallback = wrapperRequest(callback)
