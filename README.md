@@ -14,6 +14,11 @@ simplify express router
 $ npm install uno-api
 ```
 
+## Boilerplate Uno-Api
+- boilerplate-express-with-sequelize (https://github.com/masb0ymas/boilerplate-express-with-sequelize) Thanks To: masb0ymas
+
+
+
 ## Example
 ```js
 var router = express.Router();
