@@ -11,6 +11,13 @@ simplify express router
 - getAllRoutes, for get all list route in uno-api
 
 
+## Boilerplate Uno-Api
+This boilerplate using uno-api, you can learn here how to use uno-api
+ 
+Thanks To: masb0ymas
+- boilerplate-express-with-sequelize (https://github.com/masb0ymas/boilerplate-express-with-sequelize) 
+
+
 ## installing
 
 ```bash
