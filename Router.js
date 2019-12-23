@@ -3,12 +3,17 @@
  */
 const ArgumentHelpers = require('./ArgumentHelpers')
 
+const apis = {}
+
 const UNOS_CONFIG = {
+	title: '',
 	baseURL: '',
 	middleware: undefined,
+	wrapperRequest: undefined
 }
 
 const CREATE_CONFIG = {
+	title: '',
 	baseURL: '',
 	get: undefined, post: undefined, put: undefined, delete: undefined,
 	getWithParam: undefined, postWithParam: undefined,
@@ -122,10 +127,28 @@ class UnosApi {
 		}
 		this.configs = Object.assign(cloneObj(UNOS_CONFIG), configs)
 		this.router = router
+		this.initRouteApis()
+	}
+
+	initRouteApis() {
+		let titleApis = this.configs.title || (Object.entries(apis).length + 1).toString()
+		apis[titleApis] = {}
+		this.curApis = apis[titleApis]
+	}
+
+	addToListRouteApis({createConfigs, method, url, callback}) {
+		const { baseURL } = createConfigs
+		const title = createConfigs.title || baseURL
+		this.curApis[title] = (this.curApis[title] || [])
+		this.curApis[title].push({url, method, functionName: callback.name})
 	}
 
 	getBaseURL(createConfigs, cfgMethod) {
-		return [this.configs.baseURL, [createConfigs.baseURL, cfgMethod.url || ''].join('/')].join('')
+		const urls = [createConfigs.baseURL]
+		if(cfgMethod.url) {
+			urls.push(cfgMethod.url)
+		}
+		return [this.configs.baseURL, urls.join('/')].join('')
 	}
 
 	create(configs) {
@@ -151,10 +174,14 @@ class UnosApi {
 		if(wrapperRequest) {
 			curCallback = wrapperRequest(callback)
 		}
+		this.addToListRouteApis({createConfigs, method, url, callback})
+
 		this.router[method](url, ...middleware, curCallback)
 	}
 
-
+	static get getAllRoutes() {
+		return apis
+	}
 }
 
 module.exports = UnosApi

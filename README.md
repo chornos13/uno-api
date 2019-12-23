@@ -7,6 +7,9 @@
 
 simplify express router
 
+#What's New in 1.2.0
+- getAllRoutes, for get all list route in uno-api
+
 
 ## installing
 
@@ -24,13 +27,6 @@ const UserController = require('./controllers/UserController')
 function mainPage(req, res, next) {
   res.render('index', { title: 'Express' });
 }
-
-/* GET home page. */
-simpleRouter.create({
-  baseURL: '/',
-  middleware: MiddlewareAuth.token, //use array example: [MiddlewareAuth.token, MiddlewareAuth.ip]
-  get: mainPage
-})
 
 simpleRouter.create({
 	baseURL: '/user',
@@ -54,39 +50,110 @@ simpleRouter.create({
 ## unoAPI
 
 
+Key | Type | Object Key
+--- | --- | ---
+`Router` | Function | configRouter 
+`OPTIONS` | Object | 
+
+
 #### unoApi.Router(config)
+config
+
+Key | Type | Desc
+--- | --- | ---
+`title` | string | title for getAll
+`baseURL` | string | baseURL for this Router 
+`middleware` | function, array function | middleware for this Router 
+`wrapperRequest` | function | wrapperRequest / wrapper callback
+
 
 ```js
 //example
+
 const simpleRouter = new unoApi.Router({
-	baseURL: '',
-	middleware: undefined,
+	title: 'RoutePublic', // this is grouping name routes for getAllRoutes
+	baseURL: '', // you can define global baseURL here for this route
+	middleware: [Middleware1, Middleware2], // you can define middleware here
+	wrapperRequest: wrapperApiPublic // handle all callback by this function, ex: wrapperApiPublic(callback)
 })
 ```
 
+
+### .Router API
+Key | Type | Desc
+--- | --- | ---
+`getAllRoutes` | static function | to get all Routes Uno-Api
+`create` | function | to create route 
+
 #### simpleRouter.create(createConfig)
+
+create config
+
+Key | Type | Desc
+--- | --- | ---
+`title` | string | grouping name for getAllRoutes
+`baseURL` | string | url API 
+`get` | function, array function, object | get method 
+`getWithParam` | array | get method 
+`post` | function, array function, object | post method 
+`postWithParam` | array | post method 
+`put` | function, array function, object | put method 
+`putWithParam` | array | put method 
+`delete` | function, array function, object | delete method 
+`deleteWithParam` | array | delete method 
+`middleware` | function / array function | middleware  
+`overrideMiddleware` | boolean | override middleware UnoApi.Router  
+`wrapperRequest` | function | wrapperRequest / wrapper callback  
+
 
 ```js
 simpleRouter.create({
-	baseURL: '/public',
-	get: undefined, post: undefined, put: undefined, delete: undefined,
-	getWithParam: undefined, postWithParam: undefined,
-	putWithParam: undefined, deleteWithParam: undefined,
-	middleware: undefined,
-	overrideMiddleware: false,
+    title: 'ApiMasterData',
+    baseURL: '/master',
+    get: myGetFunction, 
+    post: [myMiddlewarePost, myPostFunction],
+    put: {
+      middleware: [myMiddlewarePut],
+      callback: myPutFunction,
+      overrideMiddleware: true
+    },
+    delete: [myMiddlewareDelete, myDeleteFunction, UnoApi.OPTIONS.OVERRIDE_MIDDLEWARE], // like put
+    getWithParam: [
+      [':id', myMiddlewareGetParam, myGetParamFunction], //ex: http://example.com/master/1
+      [':id/:userid', myMiddlewareGetParam, myGetParamFunction, UnoApi.OPTIONS.OVERRIDE_MIDDLEWARE], //ex: http://example.com/master/1/299
+      ['detail', myMiddlewareGetParam, myGetParamFunction, UnoApi.OPTIONS.OVERRIDE_MIDDLEWARE], //ex: http://example.com/master/detail
+    ], // this config same for all route method get, post, put, delete (withParam)
+    middleware: [MiddlewareMasterData],
+    overrideMiddleware: true, // this will remove all UnoApi.Router middleware only for this API
+    wrapperRequest: wrapperRequestMaster // wrapperRequest only for this API master, this will replace wrapperRequest UnoApi.Router
 })
 ```
 
 
 #### method config
 
+method config
+
+Key | Type | Desc
+--- | --- | ---
+`callback` | function | callback method 
+`middleware` | function / array function | middleware  
+`overrideMiddleware` | boolean | override middleware UnoApi.Router and .create  
+`wrapperRequest` | function | wrapperRequest for this method only  
+
 ```js
 simpleRouter.create({
 	baseURL: '/public',
 	get: {
-		middleware: undefined,
-		callback: undefined, url: undefined,
-		overrideMiddleware: false
+            middleware: myGetMiddleware,
+            callback: myGetFunction,
+            overrideMiddleware: true,
+            wrapperRequest: wrapperRequestMethod //
+	},
+	put: {
+            middleware: myPutMiddleware,
+            callback: wrapperRequestMethod(myPutFunction), //this is same like using wrapperRequest
+            overrideMiddleware: true,
 	}
 })
 ```
