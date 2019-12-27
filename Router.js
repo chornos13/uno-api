@@ -132,7 +132,7 @@ class UnosApi {
 
 	initRouteApis() {
 		let titleApis = this.configs.title || (Object.entries(apis).length + 1).toString()
-		apis[titleApis] = {}
+		apis[titleApis] = apis[titleApis] || {}
 		this.curApis = apis[titleApis]
 	}
 
