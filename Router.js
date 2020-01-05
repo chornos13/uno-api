@@ -173,6 +173,7 @@ class UnosApi {
 		let curCallback = callback
 		if(wrapperRequest) {
 			curCallback = wrapperRequest(callback)
+			curCallback.rawCallback = callback
 		}
 		this.addToListRouteApis({createConfigs, method, url, callback})
 
