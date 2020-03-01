@@ -11,7 +11,7 @@ package-lock.json
 /coverage
 
 # production
-/dist
+/lib
 /build
 /public/uploads
 /public/dokumen
