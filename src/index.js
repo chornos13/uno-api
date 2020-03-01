@@ -1,7 +1,7 @@
 /*
 	Author: Chornos13
  */
-const Router = require('./Router.ts')
+const Router = require('./Router')
 const OPTIONS = {
   OVERRIDE_MIDDLEWARE: true
 }

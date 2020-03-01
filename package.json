@@ -1,6 +1,6 @@
 {
   "name": "uno-api",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "simplify express router",
   "main": "lib/index.js",
   "repository": {
