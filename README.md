@@ -167,6 +167,6 @@ simpleRouter.create({
 
 
 ## TO-DO
-- function withoutMiddleware(...fnName || fn)
-- Generate all API list for documentation 
-- Edit UI Documentation
+- function withoutMiddleware(...fnName || fn) (proposed: 14 April 2020)
+- Generate all API list for documentation (proposed: 14 April 2020)
+- Edit UI Documentation (proposed: 14 April 2020)
