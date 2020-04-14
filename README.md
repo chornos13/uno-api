@@ -164,3 +164,7 @@ simpleRouter.create({
 	}
 })
 ```
+
+
+## TO-DO
+- function withoutMiddleware(...fnName || fn)
